@@ -1,0 +1,84 @@
+{
+  "workflow": {
+    "id": "example-workflow-001",
+    "name": "Basic AI Assistant",
+    "description": "A simple workflow that processes user queries through an LLM",
+    "version": "1.0.0",
+    "nodes": [
+      {
+        "id": "start",
+        "type": "start",
+        "position": { "x": 100, "y": 100 },
+        "data": {
+          "title": "Start",
+          "variables": [
+            {
+              "name": "query",
+              "type": "string",
+              "required": true,
+              "description": "User input query"
+            }
+          ]
+        }
+      },
+      {
+        "id": "llm-1",
+        "type": "llm",
+        "position": { "x": 300, "y": 100 },
+        "data": {
+          "title": "LLM Processor",
+          "model": {
+            "provider": "openai",
+            "name": "gpt-4",
+            "mode": "chat",
+            "completion_params": {
+              "temperature": 0.7,
+              "max_tokens": 1000
+            }
+          },
+          "prompt": {
+            "system": "You are a helpful AI assistant. Provide clear, concise, and accurate responses.",
+            "user": "{{#start.query#}}"
+          },
+          "memory": {
+            "enabled": true,
+            "window": 5
+          }
+        }
+      },
+      {
+        "id": "end",
+        "type": "end",
+        "position": { "x": 500, "y": 100 },
+        "data": {
+          "title": "End",
+          "outputs": [
+            {
+              "name": "response",
+              "type": "string",
+              "value": "{{#llm-1.text#}}"
+            }
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-1",
+        "source": "start",
+        "target": "llm-1"
+      },
+      {
+        "id": "edge-2",
+        "source": "llm-1",
+        "target": "end"
+      }
+    ]
+  },
+  "metadata": {
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "author": "AI Workbench",
+    "tags": ["example", "basic", "chat"]
+  }
+}
