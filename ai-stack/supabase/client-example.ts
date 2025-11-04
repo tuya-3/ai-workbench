@@ -3,6 +3,9 @@
  * 
  * This example demonstrates how to integrate Supabase in your Next.js application.
  * It includes database queries, real-time subscriptions, and authentication.
+ * 
+ * NOTE: This is a reference implementation. Copy and adapt this code to your project.
+ * Ensure all required environment variables are set before using in production.
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';

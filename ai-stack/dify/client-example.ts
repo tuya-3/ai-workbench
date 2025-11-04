@@ -3,6 +3,9 @@
  * 
  * This example demonstrates how to integrate Dify workflows in your Next.js application.
  * You can use this as a starting point for your AI features.
+ * 
+ * NOTE: This is a reference implementation. Copy and adapt this code to your project.
+ * Ensure all required environment variables are set before using in production.
  */
 
 // Types for Dify API

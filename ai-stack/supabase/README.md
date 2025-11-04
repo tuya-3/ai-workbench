@@ -43,6 +43,8 @@ The `schema.sql` file includes:
 
 ## Client Integration
 
+The example files in this folder (`client-example.ts`) are reference implementations showing how to integrate Supabase into your Next.js application. These files are excluded from the main TypeScript compilation and should be copied/adapted into your actual application code when needed.
+
 See `client-example.ts` for TypeScript code to:
 - Initialize Supabase client
 - Query and mutate data
