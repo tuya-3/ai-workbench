@@ -36,13 +36,21 @@ You can import this into Dify or use it as a reference.
 
 ## Client Integration
 
-The example files in this folder (`client-example.ts`) are reference implementations showing how to integrate Dify into your Next.js application. These files are excluded from the main TypeScript compilation and should be copied/adapted into your actual application code when needed.
+The `client-example.ts` file provides a **minimal starting point** for integrating Dify into your application. This is an initial template that you should expand based on your project needs.
 
-See `client-example.ts` for TypeScript code to:
-- Initialize Dify client
-- Send messages to workflows
-- Handle streaming responses
-- Manage conversation sessions
+**Current implementation includes:**
+- Basic `DifyClient` class
+- Simple message sending
+- Example usage
+
+**You can extend this with:**
+- Streaming responses for real-time AI output
+- Conversation history management
+- Error handling and retry logic
+- Custom workflow parameters
+- Multi-turn conversation support
+
+Copy and customize `client-example.ts` into your application code as you build out features.
 
 ## API Endpoints
 
