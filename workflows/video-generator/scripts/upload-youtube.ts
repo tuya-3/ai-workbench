@@ -202,7 +202,7 @@ export function generateYouTubeMetadata(
 
   // Extract tags from content
   const contentTags = extractTags(script);
-  const allTags = [...new Set([...defaultTags, ...contentTags])].slice(0, 500); // YouTube limit
+  const allTags = Array.from(new Set([...defaultTags, ...contentTags])).slice(0, 500); // YouTube limit
 
   return {
     title: script.title.substring(0, 100), // YouTube title limit
