@@ -138,3 +138,16 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vercel
+
+# Video generation temporary files
+/tmp/video-gen-*
+workflows/video-generator/output/
+workflows/video-generator/**/audio/
+workflows/video-generator/**/slides/
+*.mp4
+*.mp3
+*.wav
+*.png
+*.jpg
+!workflows/video-generator/templates/*.png
+!workflows/video-generator/templates/*.jpg
