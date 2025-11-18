@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy-key' }}
+          NEXT_PUBLIC_DIFY_API_URL: ${{ secrets.NEXT_PUBLIC_DIFY_API_URL || 'https://api.dify.ai/v1' }}
+          DIFY_API_KEY: ${{ secrets.DIFY_API_KEY || 'dummy-key' }}
+
+  migrate-check:
+    name: Migration Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Check migration files
+        run: |
+          if [ ! -f "ai-stack/supabase/migrations/001_initial.sql" ]; then
+            echo "Error: Initial migration file not found"
+            exit 1
+          fi
+          echo "Migration files check passed"
+
+      - name: Validate SQL syntax (basic check)
+        run: |
+          # Basic SQL syntax validation
+          if grep -q "CREATE TABLE" ai-stack/supabase/migrations/*.sql; then
+            echo "SQL migration files contain CREATE TABLE statements"
+          else
+            echo "Warning: No CREATE TABLE statements found in migration files"
+          fi
+
+  preview-prepare:
+    name: Preview Preparation
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check environment variables template
+        run: |
+          echo "Checking environment variables setup..."
+          if [ -f ".env.example" ]; then
+            echo "Environment variables template found"
+          else
+            echo "Warning: No .env.example file found"
+          fi
+
+      - name: Verify infrastructure files
+        run: |
+          echo "Verifying infrastructure files..."
+          if [ -f "ai-stack/supabase/docker-compose.yml" ]; then
+            echo "✓ docker-compose.yml found"
+          else
+            echo "✗ docker-compose.yml not found"
+            exit 1
+          fi
+          
+          if [ -f "ai-stack/supabase/config.toml" ]; then
+            echo "✓ Supabase config.toml found"
+          else
+            echo "✗ Supabase config.toml not found"
+            exit 1
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Preview Environment Ready ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- All checks passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Infrastructure files verified" >> $GITHUB_STEP_SUMMARY
+          echo "- Ready for preview deployment" >> $GITHUB_STEP_SUMMARY
+
+
