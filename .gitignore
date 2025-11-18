@@ -138,3 +138,28 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vercel
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ruby (if not using Ruby)
+.ruby-version
+.ruby-gemset
+
+# Docker volumes and data
+supabase_db_data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Supabase local files (generated)
+.supabase/

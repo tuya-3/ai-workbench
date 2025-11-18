@@ -1,0 +1,32 @@
+services:
+  # PostgreSQL (ローカル開発用 - MVP用に標準PostgreSQLを使用)
+  supabase:
+    image: postgres:15-alpine
+    container_name: ai-workbench-supabase
+    ports:
+      - "54322:5432"  # Postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    volumes:
+      - supabase_db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Supabase Studio (管理画面) - シンプル化版
+  # Note: Full Supabase Studio requires additional services
+  # For MVP, we'll use direct PostgreSQL connection
+
+volumes:
+  supabase_db_data:
+
+networks:
+  default:
+    name: ai-workbench-network
+

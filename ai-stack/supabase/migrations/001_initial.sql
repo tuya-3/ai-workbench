@@ -1,12 +1,11 @@
--- AI Workbench - Supabase Database Schema (MVP)
--- Minimal schema for MVP development environment
+-- Initial migration for MVP development environment
+-- Creates users and samples tables
 
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Users table (サンプル用の簡易usersテーブル)
--- Note: Supabase Auth を使用する場合は auth.users テーブルも利用可能
 CREATE TABLE IF NOT EXISTS public.users (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
@@ -89,3 +88,5 @@ CREATE TRIGGER update_samples_updated_at
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+
+

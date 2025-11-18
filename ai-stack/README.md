@@ -111,10 +111,15 @@ ai-stack/
 ├── dify/
 │   ├── README.md            # Dify-specific documentation
 │   ├── example-workflow.json # Sample workflow configuration
-│   └── client-example.ts    # TypeScript client example
+│   ├── client-example.ts    # TypeScript client example
+│   └── api-example.ts       # API integration example
 └── supabase/
     ├── README.md            # Supabase-specific documentation
+    ├── docker-compose.yml   # Local development environment
+    ├── config.toml          # Supabase CLI configuration
     ├── schema.sql           # Database schema
+    ├── migrations/          # Database migrations
+    │   └── 001_initial.sql
     └── client-example.ts    # TypeScript client example
 ```
 
